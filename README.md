@@ -114,7 +114,7 @@ Now that this variable is declared, the following command tests your GitHub auth
 
 ```
 curl --request GET \
---url "https://github.ncsu.edu/api/v3" \
+--url "https://api.github.com" \
 --header "Authorization: Bearer $NCSU_GITHUB_TOKEN"
 ```
 
@@ -161,8 +161,6 @@ Your workflow should:
 
 Find another way for your action runner to read data from your workshop repository without configuring a secret in your repo and without making the repo public.
 
-
-Due 23:59 AOE September 9th, Form submitted and Repo synched 
 
 Complete the questions here:
 [Google Form file upload](https://forms.gle/pbUxjRHtQ5iX3cQt8)
