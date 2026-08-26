@@ -99,7 +99,7 @@ Navigate to the "Action" tab and you should see a list of "Workflow runs", inclu
 
 ## 4. Setting up a "Repository Secret"
 
-In a previous workshop, we used an environment variable to pass secrets into a container.   For this workshop, we're going to use a "secrets manager" tool provided by GitHub.
+For this workshop, we're going to use a "secrets manager" tool provided by GitHub.
 
 On this repo, go to `Settings > Secrets and Variables` and click the "New repository secret" button.  Name your secret `NCSU_GITHUB_TOKEN` and for the "secret" part either create a new PAT token or use the one from a previous workshop.  The "secrets" management tool stores your token (encrypted) in a way that we can use it with our workflow without having to encode the token in the workflow.  For more instructions [see this page](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions).
 
