@@ -8,14 +8,48 @@ In this workshop, you will learn about automating your DevOps workflow by runnin
 
 
 
-## 1. Check that you have a workshop repo set up.
-
-For this workshop, we created a repo for you, `https://github.ncsu.edu/CSC-519/CSC-519-WS-3-<YOUR-UNITY-ID>`
-
-If you can't find your repo, please notify the teaching staff.
 
 
-## 2. Create your first GitHub Action
+## 1. Create a new repo and share it with teaching staff
+
+Please create a repo on your NC State Github, and call it `csc519-devops-workshop-3`
+
+Add the teaching staff as collaborators under `Settings > Collaboration and Access`.  Add (unity IDs: `hbrown4_ncstate`, `hsun26_ncstate`, `lliu39_ncstate`, and `jwore_ncstate`).
+
+
+## 2. Gain access to your own persistent VM
+
+[Follow these instructions](https://github.com/ncstate-csc-coursework/csc519-fall2026-accessing-remote-vms) to find your VM Hostname and get `ssh` access to it.
+
+You will need access to your VM so you can set it up to serve as a "GitHub Self-Hosted Action Runner."
+
+
+
+## 3. Configure your persistent VM as a "Self-hosted Action Runner"
+
+In GitHub lingo, an "Action Runner" is some compute that has been configured to perform Github "actions."  These "actions" include commands that can perform automation on the code in your repo.  These actions are event-driven.  We're going to use your DevOps VM as action runner.
+
+In your workshop repo, go to `Settings > Actions > Runners`, and click on the button that says "New self-hosted runner."
+
+Choose "Linux" and "x64".   For this next part, you'll need have access to your persistent VM via `ssh`.  Once you have this ssh connection open in another window, copy and paste the `Download` and `Configure` commands from the GitHub action runner's instructions into your VM.  When you run the configuration, you can accept all the defaults (leave them blank) for setting up the action runner's name, group, etc.
+
+Once your action running is running, you should be able to refresh the page in your Github repo for `GitHub > Settings > Actions` and see your action runner listed.
+
+Note that this runner will only "stay alive" as long as your ssh connection is active.  If you want your persistent VM to keep the action runner active when you're not connected via `ssh`, you'll need to navigate to the `actions-runner` directory you just created on your VM, and then run:
+
+
+(this might break if CSC-IT has disabled `sudo`)
+
+`
+sudo ./svc.sh install
+sudo ./svc.sh start
+`
+
+If this works, great, otherwise you can ask the teaching staff for other methods (like `screen` or `tmux`) or use an AI to help :)
+
+
+
+## 4. Create your first GitHub Action
 
 GitHub provides [useful and detailed documentation of GitHub actions](https://docs.github.com/en/enterprise-cloud@latest/actions), especially [the Quickstart](https://docs.github.com/en/enterprise-cloud@latest/actions/quickstart) guide.  Depending on your learning style, you might also seek resources (videos?) from other sources.
 
@@ -92,12 +126,12 @@ Change `exit 0` to any return code that does *not* mean success (see Redhat link
 
 By committing this change, you should be able to see the results in the "Actions" tab.
 
-## 3. Viewing the results of an action.
+## 5. Viewing the results of an action.
 
-Navigate to the "Action" tab and you should see a list of "Workflow runs", including the most recent unsuccessful one.  On the Actions tab, D=drill down on the results of your workflow by clicking on the workflow name, then click on the job name (in this case, it should be "this-is-a-job-name" unless you changed it), then you can click on the output of the `run:` command. Once you've found this, copy the URL (should be something like `https://github.ncsu.edu/CSC-519/CSC-519-WS-3-<YOUR-UNITY-ID>/actions/runs/57163/jobs/117676`) and save it for the form.
+Navigate to the "Action" tab and you should see a list of "Workflow runs", including the most recent unsuccessful one.  On the Actions tab, D=drill down on the results of your workflow by clicking on the workflow name, then click on the job name (in this case, it should be "this-is-a-job-name" unless you changed it), then you can click on the output of the `run:` command. Once you've found this, copy the URL (should be something like `https://github.com/UNITY_ID_ncstate/csc519-devops-workshop-3/actions/runs/33516874363`) and save it for the form.
 
 
-## 4. Setting up a "Repository Secret"
+## 6. Setting up a "Repository Secret"
 
 For this workshop, we're going to use a "secrets manager" tool provided by GitHub.
 
@@ -121,7 +155,7 @@ curl --request GET \
 When successful, the command above should return a slew of URLs. When unsuccessful, it will return "Bad Credentials" (if the PAT has expired or not copied correctly, for example).
 
 
-## 5. Refering to `github` variables in workflows: "Contexts"
+## 7. Refering to `github` variables in workflows: "Contexts"
 
 Within a workflow, you can access variables that store relevant information, like your GitHub username or the full name of the current repo.  GitHub refers to these variables collectively as the "`github` context."  As described in [GitHub's documentation on the "context"](https://docs.github.com/en/actions/learn-github-actions/contexts#github-context).
 
@@ -143,7 +177,7 @@ In this workflow, anything inside the `${{...}}` is *accessing the context*.  In
 So when this workflow runs, the parser/interpreter that runs it translates ``${{ github.actor }}`` in your username (which is also your UNITY ID).
 
 
-## 6. Use "Github context" and secrets a workflow
+## 8. Use "Github context" and secrets a workflow
 
 __THIS SECTION AND ITS DELIVERABLE ARE INDIVIDUAL WORK.__
 
@@ -152,14 +186,9 @@ Your workflow should:
 * Be event driven. Your workflow should run when a pull request is opened *or* reopened.
 * Use `- run:` to run a `curl ...` command that lists the branches on your workshop repository *without* hard-coding your username, token, or repository name.  Running this `curl` command here is for demonstration purposes only.  The purpose of this is to demonstrate that you can pass "github context variables" and your secret through a workflow.
 * You will need to figure out the correct ["github context variables"](https://docs.github.com/en/actions/learn-github-actions/contexts#github-context) for your `run:` command.
-* From the Github "Actions" tab in your workshop repo, drill down to the output of your successful `curl` command.  You'll need to click on the name of your workflow, then on the job name, then expand the individual `run` command results to see the command output.   Note and copy the URL, it should be something like `https://github.ncsu.edu/CSC-519/CSC-519-WS-3-<YOUR-UNITY-ID>/actions/runs/57163/jobs/117676` and you'll need it for the form.
-* Also, Do not check in a token. Never ever.
-* For this workshop only, committing to `main` is OK.
-
-
-## 7. Stretch Goal (ungraded)
-
-Find another way for your action runner to read data from your workshop repository without configuring a secret in your repo and without making the repo public.
+* From the Github "Actions" tab in your workshop repo, drill down to the output of your successful `curl` command.  You'll need to click on the name of your workflow, then on the job name, then expand the individual `run` command results to see the command output.   Note and copy the URL, it should be something like `https://github.com/UNITY_ID_ncstate/csc519-devops-workshop-3/actions/runs/33516874363` and you'll need it for the form.
+* Also, Do not check in a token. Never ever!
+* For this workshop only, committing directly to `main` is OK.
 
 
 Complete the questions here:
