@@ -192,7 +192,7 @@ Your workflow should:
 
 
 Complete the questions here:
-[Google Form file upload](https://forms.gle/pbUxjRHtQ5iX3cQt8)
+[Google Form file upload](https://docs.google.com/forms/d/e/1FAIpQLScfey2zgA6tepmgcHN-BF66Z1-WCTYmp14yjjY49WwRl5xXFA/viewform?usp=publish-editor)
 
 
 ## That's it :)  Good job.
