@@ -19,7 +19,7 @@ Add the teaching staff as collaborators under `Settings > Collaboration and Acce
 
 ## 2. Gain access to your own persistent VM
 
-[Follow these instructions](https://github.com/ncstate-csc-coursework/csc519-fall2026-accessing-remote-vms) to find your VM Hostname and get `ssh` access to it.
+[Connect to your VM by following these instructions](https://github.com/ncstate-csc-coursework/csc519-fall2026-accessing-remote-vms) to find your VM Hostname and get `ssh` access to it.
 
 You will need access to your VM so you can set it up to serve as a "GitHub Self-Hosted Action Runner."
 
