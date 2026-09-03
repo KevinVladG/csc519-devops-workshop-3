@@ -1,9 +1,40 @@
-name: hello-world
+name: Handle test issues
+
 on:
   issues:
-    types: [opened, edited, milestoned, deleted]
+    types: [opened]
+
+permissions:
+  issues: write
+
 jobs:
-  hello-world:
+  handle-test-issue:
     runs-on: self-hosted
+
     steps:
-      - run: echo "Hello world!"
+      - name: Comment on and close test issues
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const issueText = `${issue.title}\n${issue.body ?? ""}`;
+
+            if (!/\btest\b/i.test(issueText)) {
+              core.info("Issue does not contain the word test.");
+              return;
+            }
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              body: "This issue was identified as a test issue and will be closed."
+            });
+
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              state: "closed",
+              state_reason: "not_planned"
+            });
