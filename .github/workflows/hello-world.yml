@@ -1,7 +1,9 @@
 name: hello-world
-on: push
+on:
+  issues:
+    types: [opened, edited, milestoned, deleted]
 jobs:
-  this-is-a-job-name:
+  hello-world:
     runs-on: self-hosted
     steps:
-      - run: exit 0
+      - run: echo "Hello world!"
