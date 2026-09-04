@@ -4,4 +4,4 @@ jobs:
   this-is-a-job-name:
     runs-on: self-hosted
     steps:
-      - run: exit 2
+      - run: exit 9
