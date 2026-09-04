@@ -1,7 +1,21 @@
 name: hello-world
-on: push
+run-name: ${{ github.actor }} is learning
+on:
+  pull_request:
+    types: [opened, reopened]
 jobs:
   this-is-a-job-name:
     runs-on: self-hosted
     steps:
-      - run: exit 1
+      - name: List repository branches
+        env:
+          API_URL: ${{ github.api_url }}
+          REPOSITORY: ${{ github.repository }}
+          NCSU_GITHUB_TOKEN: ${{ secrets.NCSU_GITHUB_TOKEN }}
+        run: |
+          curl --fail-with-body --silent --show-error \
+            --request GET \
+            --url "${API_URL}/repos/${REPOSITORY}/branches" \
+            --header "Accept: application/vnd.github+json" \
+            --header "Authorization: Bearer ${NCSU_GITHUB_TOKEN}" \
+            --header "X-GitHub-Api-Version: 2022-11-28"
